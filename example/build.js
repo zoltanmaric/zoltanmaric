@@ -16,6 +16,7 @@ getusermedia({ audio: true, video: false }, function (err, stream) {
   var meter = volumemeter(ctx, function (volume) {
     progress.style.width = volume + '%';
     if (volume > maxLevel) {
+      progressText.style.color = 'black';
       maxLevel = Math.round(volume);
       progressText.textContent = maxLevel;
       progressMax.style.width = volume + '%';
