@@ -18,7 +18,7 @@ getusermedia({ audio: true, video: false }, function (err, stream) {
     if (volume > maxLevel) {
       progressText.style.color = 'black';
       maxLevel = Math.round(volume);
-      progressText.textContent = maxLevel;
+      progressText.textContent = (volume / 20).toFixed(1);
       progressMax.style.width = volume + '%';
     }
   });
