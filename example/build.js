@@ -4,9 +4,33 @@ var getusermedia = require('getusermedia')
 
 var progress = document.querySelector('#progress');
 var progressMax = document.querySelector('#progress-max');
-var progressText = document.querySelector('#progress-text');
 
 var maxLevel = 0;
+
+const getCookie = (name) => {
+  return document.cookie.split('; ').reduce((r, v) => {
+    const parts = v.split('=')
+    return parts[0] === name ? decodeURIComponent(parts[1]) : r
+  }, '')
+}
+
+let params = new URLSearchParams(window.location.search);
+let category = params.get('category');
+let imageUrl = params.get('imageUrl');
+
+console.log('category: ' + category);
+console.log('imageUrl: ' + imageUrl);
+
+var categoryMaxScore = 0;
+let categoryMaxScoreString = getCookie(category + '.maxScore');
+if (categoryMaxScoreString)
+  categoryMaxScore = Number(categoryMaxScoreString);
+
+let bestImageUrl = decodeURIComponent(getCookie(category + '.bestImageUrl'));
+
+console.log('category max score: ' + categoryMaxScore);
+console.log('best image URL: ' + bestImageUrl);
+
 
 console.log(document.cookie);
 
@@ -18,10 +42,11 @@ getusermedia({ audio: true, video: false }, function (err, stream) {
   var meter = volumemeter(ctx, function (volume) {
     progress.style.width = volume + '%';
     if (volume > maxLevel) {
-      progressText.style.color = 'black';
       maxLevel = volume;
-      document.cookie = 'cookie1='+ maxLevel + '; expires=Fri, 8 Dec 2017 20:47:11 UTC; path=/'
-      progressText.textContent = (volume / 20).toFixed(1);
+      if (maxLevel > categoryMaxScore) {
+        document.cookie = category + '.bestImageUrl=' + imageUrl;
+        document.cookie = category + '.maxScore='+ maxLevel;
+      }
       progressMax.style.width = volume + '%';
     }
   });
