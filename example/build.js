@@ -8,6 +8,8 @@ var progressText = document.querySelector('#progress-text');
 
 var maxLevel = 0;
 
+console.log(document.cookie);
+
 getusermedia({ audio: true, video: false }, function (err, stream) {
   if (err) return console.error(err)
 
@@ -17,7 +19,8 @@ getusermedia({ audio: true, video: false }, function (err, stream) {
     progress.style.width = volume + '%';
     if (volume > maxLevel) {
       progressText.style.color = 'black';
-      maxLevel = Math.round(volume);
+      maxLevel = volume;
+      document.cookie = 'cookie1='+ maxLevel + '; expires=Fri, 8 Dec 2017 20:47:11 UTC; path=/'
       progressText.textContent = (volume / 20).toFixed(1);
       progressMax.style.width = volume + '%';
     }
