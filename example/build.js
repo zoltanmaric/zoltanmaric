@@ -7,13 +7,6 @@ var progressMax = document.querySelector('#progress-max');
 
 var maxLevel = 0;
 
-const getCookie = (name) => {
-  return document.cookie.split('; ').reduce((r, v) => {
-    const parts = v.split('=')
-    return parts[0] === name ? decodeURIComponent(parts[1]) : r
-  }, '')
-}
-
 let params = new URLSearchParams(window.location.search);
 let category = params.get('category');
 let imageUrl = params.get('imageUrl');
